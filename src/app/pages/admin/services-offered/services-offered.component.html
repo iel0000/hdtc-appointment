@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card border-0 rounded-lg">
+      <div class="card-header justify-content-center bg-white border-0">
+        <h3 class="my-2">Services Offered</h3>
+      </div>
+    </div>
+    <div class="p-fluid formgrid grid card border-0 rounded-lg">
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left"> </ng-template>
+        <ng-template pTemplate="right">
+          <button
+            pButton
+            pRipple
+            label="New"
+            icon="pi pi-plus"
+            class="p-button-info"></button>
+        </ng-template>
+      </p-toolbar>
+      <p-table [value]="products">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th>Duration</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>{{product.name}}</td>
+                <td><img [src]="'assets/img/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td>
+                <td>{{product.price | currency:'PHP'}}</td>
+                <td>{{product.duration}}</td>
+                <td><button
+                  pButton
+                  pRipple
+                  icon="pi pi-check"
+                  class="p-button-rounded p-button-text p-button-success"></button>
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-times"
+                  class="p-button-rounded p-button-text p-button-warning"></button>
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-eye"
+                  class="p-button-rounded p-button-text p-button-secondary"></button></td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{products ? products.length : 0 }} products.
+            </div>
+        </ng-template>
+    </p-table>
+    </div>
+  </div>
+</div>

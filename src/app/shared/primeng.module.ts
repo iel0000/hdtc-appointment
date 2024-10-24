@@ -26,6 +26,18 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
+import { TableModule } from 'primeng/table';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToolbarModule } from 'primeng/toolbar';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { FieldsetModule } from 'primeng/fieldset';
+import { ChartModule } from 'primeng/chart';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { MenuModule } from 'primeng/menu';
+import { ChipModule } from 'primeng/chip';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [],
@@ -50,7 +62,19 @@ import { TagModule } from 'primeng/tag';
     ToastModule,
     DialogModule,
     TagModule,
-    
+    CardModule,
+    TableModule,
+    ConfirmDialogModule,
+    ToolbarModule,
+    InputNumberModule,
+    KeyFilterModule,
+    PanelMenuModule,
+    FieldsetModule,
+    ChartModule,
+    MegaMenuModule,
+    MenuModule,
+    ChipModule,
+    SkeletonModule,
   ],
   providers: [MessageService, ConfirmationService],
   exports: [
@@ -77,6 +101,21 @@ import { TagModule } from 'primeng/tag';
     ToastModule,
     DialogModule,
     TagModule,
+    SidebarModule,
+    RadioButtonModule,
+    RippleModule,
+    TableModule,
+    ConfirmDialogModule,
+    ToolbarModule,
+    InputNumberModule,
+    KeyFilterModule,
+    PanelMenuModule,
+    FieldsetModule,
+    ChartModule,
+    MegaMenuModule,
+    MenuModule,
+    ChipModule,
+    SkeletonModule,
   ],
 })
 export class PrimeNgModule {}
