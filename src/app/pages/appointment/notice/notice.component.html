@@ -1,0 +1,57 @@
+<p-card>
+  <p-divider align="center">
+    <span class="p-tag">IMPORTANT NOTICE</span>
+  </p-divider>
+  <b
+    ><p class="text-center px-8 mb-2 red">
+      "Do not create many online appointments for only one applicant because our
+      system will delete multiple appointments"
+    </p></b
+  >
+  <section class="text-justify notice">
+    <p>
+      1. ALL BOOKINGS CREATED ARE IN PHILIPPINE TIMEZONE. TO REMIND YOU OF THIS
+      APPOINTMENT, THE EMAIL YOU WILL RECEIVE SHOWS THE APPOINTMENT TIME SLOT IN
+      YOUR LOCAL TIMEZONE.
+    </p>
+    <p>
+      2. Please make sure that you get an appointment for EACH APPLICANT (you
+      must use a different email address for each applicant) – this online
+      booking system is designed as a ONE-SLOT PER APPLICANT system.
+    </p>
+    <p>
+      3. ALWAYS FOLLOW INSTRUCTIONS AND RULES. ANY WILLFUL DISHONESTY MAY RENDER
+      THE REFUSAL OF YOUR APPLICATON.
+    </p>
+    <p>
+      4. By using this website, you declare that all information you provided is
+      true and correct and you also understand that any willful dishonesty may
+      render the refusal of this application.
+    </p>
+    <p>
+      5. IF YOU CONTINUE TO USE THIS WEBSITE, YOU WILLFULY AGREE TO OUR TERMS,
+      CONDITIONS, AND PRIVACY POLICY; IF YOU DO NOT AGREE, DO NOT USE THE SITE.
+    </p>
+    <p-checkbox
+      [binary]="true"
+      inputId="isAcceptedTerms"
+      class="mr-2"
+      [(ngModel)]="isAcceptedTerms"
+      (onChange)="changeAccept($event)">
+    </p-checkbox>
+    <label for="isAcceptedTerms"
+      ><b>
+        I confirm that I have read, understood and agree to the above
+        conditions.
+      </b>
+    </label>
+    <div class="grid grid-nogutter justify-content-end">
+      <p-button
+        label="Next"
+        (onClick)="nextPage()"
+        icon="pi pi-angle-right"
+        iconPos="right"
+        [disabled]="!isAcceptedTerms"></p-button>
+    </div>
+  </section>
+</p-card>

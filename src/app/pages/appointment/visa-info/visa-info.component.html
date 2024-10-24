@@ -1,0 +1,305 @@
+<div class="stepsdemo-content mt-4">
+  <p-card>
+    <ng-template pTemplate="title"> VISA Information </ng-template>
+    <ng-template pTemplate="subtitle">
+      Select VISA Information ( <span style="color: red">*</span> )
+    </ng-template>
+    <ng-template pTemplate="content">
+      <form [formGroup]="visaForm">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-4">
+            <label class="mb-1" for="embassy"
+              >Embassy <span style="color: red">*</span></label
+            >
+            <p-dropdown
+              [options]="embassy"
+              placeholder="Select Embassy"
+              optionLabel="name"
+              [showClear]="true"
+              formControlName="embassy"
+              optionValue="code"
+              [ngClass]="{
+                'ng-dirty': validateControl('embassy')
+              }"
+              (onChange)="onEmbassyChange($event)"></p-dropdown>
+            <small *ngIf="validateControl('embassy')" class="p-error"
+              >Embassy is required.</small
+            >
+          </div>
+          <div class="field col-12 md:col-4">
+            <label class="mb-1" for="visaType"
+              >Visa Type <span style="color: red">*</span></label
+            >
+            <p-dropdown
+              [options]="visaType"
+              placeholder="Select Visa Type"
+              optionLabel="name"
+              [showClear]="true"
+              formControlName="visaType"
+              optionValue="code"
+              [ngClass]="{
+                'ng-dirty': validateControl('visaType')
+              }"></p-dropdown>
+            <small *ngIf="validateControl('visaType')" class="p-error"
+              >Visa Type is required.</small
+            >
+          </div>
+          <div class="field col-12 md:col-4">
+            <label class="mb-1" for="visaCategory"
+              >Visa Category <span style="color: red">*</span></label
+            >
+            <p-dropdown
+              [options]="visaCategory"
+              placeholder="Select Visa Category"
+              optionLabel="name"
+              [showClear]="true"
+              formControlName="visaCategory"
+              optionValue="code"
+              [ngClass]="{
+                'ng-dirty': validateControl('visaCategory')
+              }"></p-dropdown>
+            <small *ngIf="validateControl('visaCategory')" class="p-error"
+              >Visa Category is required.</small
+            >
+          </div>
+        </div>
+
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="mr-5" for="hasOtherId"
+                  >a. Is this your or your family's visa-related medical
+                  examination
+                </label>
+              </div>
+              <div class="col-md-4">
+                <p-radioButton
+                  name="isFirstVisa"
+                  value="yes"
+                  inputId="isFirstVisa.opt1"
+                  formControlName="isFirstVisa"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('isFirstVisa')
+                  }"></p-radioButton>
+                <label for="isFirstVisa.opt1">Yes</label>
+                <p-radioButton
+                  name="isFirstVisa"
+                  value="no"
+                  inputId="isFirstVisa.opt2"
+                  formControlName="isFirstVisa"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('isFirstVisa')
+                  }"></p-radioButton>
+                <label for="isFirstVisa.opt2">No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="mr-5" for="hasVisaRejected"
+                  >b. Has your or your family's application for a visa ever
+                  rejected before?
+                </label>
+              </div>
+              <div class="col-md-4">
+                <p-radioButton
+                  name="hasVisaRejected"
+                  value="yes"
+                  inputId="hasVisaRejected"
+                  formControlName="hasVisaRejected"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('hasVisaRejected')
+                  }"></p-radioButton>
+                <label for="hasVisaRejected">Yes</label>
+                <p-radioButton
+                  name="hasVisaRejected"
+                  value="no"
+                  inputId="hasVisaRejected2"
+                  formControlName="hasVisaRejected"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('hasVisaRejected')
+                  }"></p-radioButton>
+                <label for="hasVisaRejected2">No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="p-fluid formgrid grid"
+          *ngIf="this.visaForm.get('embassy')?.value === '1'">
+          <div class="field col-12">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="mb-1" for="isTemporaryVisa"
+                  >c. If you are applying for a Temporary visa, do you intend to
+                  apply for a permanent stay in Australia within the next 6-12
+                  months? <span style="color: red">*</span></label
+                >
+              </div>
+              <div class="col-md-4">
+                <p-radioButton
+                  name="isTemporaryVisa"
+                  value="yes"
+                  inputId="isTemporaryVisa.opt1"
+                  formControlName="isTemporaryVisa"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('isTemporaryVisa')
+                  }"></p-radioButton>
+                <label for="isTemporaryVisa.opt1">Yes</label>
+                <p-radioButton
+                  name="isTemporaryVisa"
+                  value="no"
+                  inputId="isTemporaryVisa.opt2"
+                  formControlName="isTemporaryVisa"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('isTemporaryVisa')
+                  }"></p-radioButton>
+                <label for="isTemporaryVisa">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="field col-12">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="mb-1" for="isHealthAssessed"
+                  >Would you like your health to be assessed "upfront" for a
+                  permanent stay in Australia?
+                  <span style="color: red">*</span></label
+                >
+              </div>
+              <div class="col-md-4">
+                <p-radioButton
+                  name="isHealthAssessed"
+                  value="yes"
+                  inputId="isHealthAssessed.opt1"
+                  formControlName="isHealthAssessed"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('isHealthAssessed')
+                  }"></p-radioButton>
+                <label for="isHealthAssessed.opt1">Yes</label>
+                <p-radioButton
+                  name="isHealthAssessed"
+                  value="no"
+                  inputId="isHealthAssessed.opt2"
+                  formControlName="isHealthAssessed"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('isHealthAssessed')
+                  }"></p-radioButton>
+                <label for="isHealthAssessed.opt2">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="field col-12 md:col-4">
+            <label class="my-2" for="lengthOfStay"
+              >Do you intend to work or study to be a
+              <span style="color: red">*</span></label
+            >
+          </div>
+          <div class="field col-12 md:col-4">
+            <p-dropdown
+              [options]="intendedWork"
+              optionLabel="name"
+              [showClear]="true"
+              formControlName="intendedWork"
+              placeholder="Select"
+              optionValue="code"
+              [ngClass]="{
+                'ng-dirty': validateControl('intendedWork')
+              }"></p-dropdown>
+          </div>
+        </div>
+
+        <div
+          class="p-fluid formgrid grid"
+          *ngIf="this.visaForm.get('embassy')?.value === '2'">
+          <div class="field col-12">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="mb-1" for="hasLetterReceived"
+                  >c. Did you receive a letter that your application is under
+                  review based on the new public policy effective June 01,2008?
+                  <span style="color: red">*</span></label
+                >
+              </div>
+              <div class="col-md-4">
+                <p-radioButton
+                  name="hasLetterReceived"
+                  value="yes"
+                  inputId="hasLetterReceived.opt1"
+                  formControlName="hasLetterReceived"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('hasLetterReceived')
+                  }"></p-radioButton>
+                <label for="hasLetterReceived.opt1">Yes</label>
+                <p-radioButton
+                  name="hasLetterReceived"
+                  value="no"
+                  inputId="hasLetterReceived.opt2"
+                  formControlName="hasLetterReceived"
+                  class="vertical-align-top ml-4 mr-1"
+                  [ngClass]="{
+                    'ng-dirty': validateControl('hasLetterReceived')
+                  }"></p-radioButton>
+                <label for="hasLetterReceived.opt2">No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="p-fluid formgrid grid"
+          *ngIf="this.visaForm.get('embassy')?.value === '3'">
+          <div class="field col-12 md:col-4">
+            <label class="my-2" for="lengthOfStay"
+              >c. Length Of Stay <span style="color: red">*</span></label
+            >
+          </div>
+          <div class="field col-12 md:col-4">
+            <p-dropdown
+              [options]="lengthOfStay"
+              optionLabel="name"
+              [showClear]="true"
+              formControlName="lengthOfStay"
+              placeholder="Select"
+              optionValue="code"
+              [ngClass]="{
+                'ng-dirty': validateControl('lengthOfStay')
+              }"></p-dropdown>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <div class="grid grid-nogutter justify-content-end">
+        <p-button
+          label="Back"
+          (onClick)="prevPage()"
+          icon="pi pi-angle-left"
+          styleClass="p-button-danger"
+          class="mr-2">
+        </p-button>
+        <p-button
+          label="Next"
+          (onClick)="nextPage()"
+          icon="pi pi-angle-right"
+          iconPos="right"
+          [disabled]="visaForm.invalid"></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

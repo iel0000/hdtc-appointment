@@ -1,0 +1,101 @@
+<form [formGroup]="scheduleForm">
+  <div class="stepsdemo-content">
+    <p-card>
+      <ng-template pTemplate="title"> Schedule </ng-template>
+      <ng-template pTemplate="content">
+        <div class="row">
+          <h5>Site:<span style="color: red">*</span></h5>
+          <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-4">
+              <p-dropdown
+                [options]="branch"
+                placeholder="Select Site"
+                optionLabel="name"
+                optionValue="id"
+                [showClear]="true"
+                formControlName="site"
+                [(ngModel)]="selectedBranch"
+                (onChange)="getDisabledDays($event)">
+                <ng-template pTemplate="selectedItem">
+                  <div *ngIf="selectedBranch">NHS {{ branchDetails.name }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>
+                    <b>NHS {{ item.name }}</b> ({{ item.location }})
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="showCalendar">
+          <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-6">
+              <h5>Date<span style="color: red">*</span></h5>
+              <p-divider></p-divider>
+              <p-calendar
+                [inline]="true"
+                formControlName="appointmentDate"
+                dataType="string"
+                [(ngModel)]="appointmentDate"
+                (onSelect)="resetSelectedTime()"
+                disabledWeekends="true"
+                [minDate]="today"
+                [disabledDates]="invalidDates"
+                [disabledDays]="[0, 6]">
+                <ng-template pTemplate="date" let-date>
+                  <span
+                    [ngClass]="{
+                      'text-danger font-semibold': isFullyBook(
+                        date.day,
+                        date.month,
+                        date.year
+                      )
+                    }"
+                    >{{ date.day }}</span
+                  >
+                </ng-template>
+              </p-calendar>
+            </div>
+            <div class="field col-12 md:col-6">
+              <h5>Time<span style="color: red">*</span></h5>
+              <p-divider></p-divider>
+              <!-- Time  -->
+              <div *ngIf="scheduleForm.get('appointmentDate')?.value">
+                <div class="row" *ngFor="let time of appointmentTime">
+                  <div class="col">
+                    <div class="field-radiobutton">
+                      <p-radioButton
+                        name="appointmentTime"
+                        [value]="time.id"
+                        [label]="time.name"
+                        formControlName="appointmentTime"
+                        [disabled]="time.availableSlot === 0">
+                      </p-radioButton>
+                    </div>
+                  </div>
+                  <div class="col text-success" *ngIf="time.availableSlot > 0">
+                    Available Slots: {{ time.availableSlot }}
+                  </div>
+                  <div class="col text-danger" *ngIf="time.availableSlot === 0">
+                    Fully Booked
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-end">
+          <p-button
+            label="Next"
+            (onClick)="nextPage()"
+            icon="pi pi-angle-right"
+            iconPos="right"
+            [disabled]="scheduleForm.invalid"></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</form>
