@@ -52,7 +52,7 @@ export class MenuComponent implements OnInit {
               {
                 label: 'Services Offered',
                 icon: 'pi pi-fw pi-sitemap',
-                routerLink: ['admin/services'],
+                routerLink: ['services'],
                 visible: this.isAdmin,
               },
             ],

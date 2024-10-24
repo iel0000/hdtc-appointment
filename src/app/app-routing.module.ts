@@ -20,6 +20,7 @@ import { AuthGuard } from './core/auth';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AdminLayoutComponent } from './shared/layout/layout.component';
 import { ServicesOfferedComponent } from './pages/admin/services-offered/services-offered.component';
+import { ServicesFormComponent } from './pages/admin/services-offered/services-form/services-form.component';
 
 const routes: Routes = [
   {
@@ -59,7 +60,19 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'admin/services',
+        path: 'services/:action',
+        component: ServicesFormComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'Admin' },
+      },
+      {
+        path: 'services/:action/:id',
+        component: ServicesFormComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'Admin' },
+      },
+      {
+        path: 'services',
         component: ServicesOfferedComponent,
         canActivate: [AuthGuard]
       },

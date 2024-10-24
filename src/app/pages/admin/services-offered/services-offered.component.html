@@ -14,7 +14,8 @@
             pRipple
             label="New"
             icon="pi pi-plus"
-            class="p-button-info"></button>
+            class="p-button-info"
+            (click)="addNew()"></button>
         </ng-template>
       </p-toolbar>
       <p-table [value]="products">
@@ -36,7 +37,7 @@
                 <td><button
                   pButton
                   pRipple
-                  icon="pi pi-check"
+                  icon="pi pi-pencil"
                   class="p-button-rounded p-button-text p-button-success"></button>
                 <button
                   pButton

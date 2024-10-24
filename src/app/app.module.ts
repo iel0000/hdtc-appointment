@@ -29,6 +29,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ServicesOfferedComponent } from './pages/admin/services-offered/services-offered.component';
+import { ServicesFormComponent } from './pages/admin/services-offered/services-form/services-form.component';
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');
@@ -52,7 +53,8 @@ export function tokenGetter() {
     ContactComponent,
     LoginComponent,
     DashboardComponent,
-    ServicesOfferedComponent
+    ServicesOfferedComponent,
+    ServicesFormComponent
   ],
   imports: [
     BrowserModule,

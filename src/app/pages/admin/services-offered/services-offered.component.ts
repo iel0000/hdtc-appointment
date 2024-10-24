@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/core/auth';
 import { IProduct } from '@app/shared/interface/product.interface';
 import { HttpService } from '@app/shared/services';
@@ -19,22 +20,27 @@ export class ServicesOfferedComponent implements OnInit {
      constructor(
     private httpSvc: HttpService,
     private messageService: MessageService,
-    private authSvc: AuthenticationService
+    private authSvc: AuthenticationService,
+    private router: Router
   ) {
     this.products =[
       {
 			 id: 0,
-code: "f230fh0g3",
-name: "Tooth Extraction",
-description: "Tooth Extraction",
-price: 500,
- duration: 2,
- image: 'tooth-extraction.jpeg'
+      code: "f230fh0g3",
+      name: "Tooth Extraction",
+      description: "Tooth Extraction",
+      price: 500,
+      duration: 2,
+      image: 'tooth-extraction.jpeg'
 		}]
   }
 
   ngOnInit() {
     this.pageTitle = 'Services Offered';
+  }
+
+  addNew() {
+    this.router.navigate(['admin/services/new']);
   }
 
 }
