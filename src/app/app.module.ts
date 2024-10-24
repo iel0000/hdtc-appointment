@@ -25,11 +25,18 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { LoginComponent } from './pages/login/login.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ServicesOfferedComponent } from './pages/admin/services-offered/services-offered.component';
+
+export function tokenGetter() {
+  return localStorage.getItem('jwt');
+}
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
     FooterComponent,
     HomeComponent,
     AppointmentComponent,
@@ -42,7 +49,10 @@ import { FooterComponent } from './shared/footer/footer.component';
     ErrorComponent,
     SpinnerComponent,
     AboutComponent,
-    ContactComponent
+    ContactComponent,
+    LoginComponent,
+    DashboardComponent,
+    ServicesOfferedComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +61,16 @@ import { FooterComponent } from './shared/footer/footer.component';
     FormsModule,
     ReactiveFormsModule,
     StoreModule.forRoot({ appointment: appointmentPageReducer }),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: [
+          'localhost:44370',
+          'htcdc.runasp.net',
+        ],
+        disallowedRoutes: [],
+      },
+    })
   ],
   providers: [
     {

@@ -14,11 +14,17 @@ import { ErrorComponent } from './pages/error/error.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { AboutComponent } from './pages/about/about.component';
+import { LoginComponent } from './pages/login/login.component';
+import { LoginGuard } from './core/login';
+import { AuthGuard } from './core/auth';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { AdminLayoutComponent } from './shared/layout/layout.component';
+import { ServicesOfferedComponent } from './pages/admin/services-offered/services-offered.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
+    component: LayoutComponent
   },
   {
     path: 'appointment',
@@ -36,10 +42,30 @@ const routes: Routes = [
     path: 'contact_us',
     component: ContactComponent,
   },
-  // {
-  //   path: 'about_us',
-  //   component: AboutComponent
-  // },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [LoginGuard],
+  },
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: DashboardComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'admin/services',
+        component: ServicesOfferedComponent,
+        canActivate: [AuthGuard]
+      },
+    ]
+  },
+  
   {
     path: '**',
     component: ErrorComponent, //add error page
