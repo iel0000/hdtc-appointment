@@ -10,8 +10,12 @@
           class="w-100">
           <div class="p-fluid formgrid grid">
             <div class="field col-12 md:col-4">
-              <label for="embassy"> Site</label>
-              <div class="text-lg">{{ scheduleInformation.site }}</div>
+              <label for="embassy"> Service</label>
+              <div class="text-lg">{{ products?.name }}</div>
+            </div>
+            <div class="field col-12 md:col-4">
+              <label for="embassy"> Description</label>
+              <div class="text-lg">{{ products?.description }}</div>
             </div>
             <div class="field col-12 md:col-4">
               <label for="visaType">Appointment Date</label>
@@ -22,163 +26,12 @@
             <div class="field col-12 md:col-4">
               <label for="visaCategory">Appointment Time</label>
               <div class="text-lg">
-                {{ scheduleInformation.appointmentTime }}
+                <ul>
+                  <li *ngFor="let item of timeSlots">
+                    {{ item }}
+                  </li>
+                </ul>      
               </div>
-            </div>
-          </div>
-        </p-panel>
-      </div>
-      <div class="p-fluid formgrid grid mt-2">
-        <p-panel
-          header="Personal Information"
-          [toggleable]="true"
-          class="w-100">
-          <div class="p-fluid formgrid grid">
-            <div class="field col-12 md:col-6">
-              <label class="mb-1" for="firstName">Child/Adult/PWD/Senior</label>
-              <div class="text-lg">{{ categories }}</div>
-            </div>
-            <div class="field col-12 md:col-6">
-              <label class="mb-1" for="firstName">Referred by</label>
-              <div class="text-lg">{{ referrals }}</div>
-            </div>
-          </div>
-
-          <div class="p-fluid formgrid grid">
-            <div class="field col-12 md:col-4">
-              <label for="firstName">Last Name</label>
-              <div class="text-lg">{{ personalInformation.lastName }}</div>
-            </div>
-            <div class="field col-12 md:col-4">
-              <label for="firstName">First Name</label>
-              <div class="text-lg">{{ personalInformation.firstName }}</div>
-            </div>
-            <div class="field col-12 md:col-4">
-              <label for="firstName">Middle Name</label>
-              <div class="text-lg">{{ personalInformation.middleName }}</div>
-            </div>
-          </div>
-
-          <div class="p-fluid formgrid grid">
-            <div class="field col-12 md:col-4">
-              <label class="mb-1" for="birthDate">Date of Birth</label>
-              <div class="text-lg">
-                {{ personalInformation.birthDate | date }}
-              </div>
-            </div>
-            <div class="field col-12 md:col-4">
-              <label class="mb-1" for="age">Age</label>
-              <div class="text-lg">{{ personalInformation.age }}</div>
-            </div>
-            <div class="field col-12 md:col-4">
-              <label class="mb-1" for="civilStatus">Civil Status</label>
-              <div class="text-lg">{{ personalInformation.civilStatus }}</div>
-            </div>
-          </div>
-
-          <div class="p-fluid formgrid grid">
-            <div class="field col-12 md:col-4">
-              <label class="mb-1" for="gender">Gender</label>
-              <div class="text-lg">{{ personalInformation.gender }}</div>
-            </div>
-          </div>
-
-          <div
-            class="p-fluid formgrid grid"
-            *ngIf="personalInformation.gender === 'Female'">
-            <div class="field col-12 md:col-4">
-              <label class="mb-1 mr-2" for="hasMenstrualPeriod"
-                >Is Menstrual Period Applicable?
-              </label>
-              <div class="text-lg">
-                {{ personalInformation.hasMenstrualPeriod ? 'Yes' : 'No' }}
-              </div>
-            </div>
-            <div
-              class="field col-12 md:col-4"
-              *ngIf="
-                personalInformation.gender === 'Female' &&
-                personalInformation.hasMenstrualPeriod
-              ">
-              <label for="menstrualPeriodStart">Menstrual Period Start</label>
-              <div class="text-lg">
-                {{ personalInformation.menstrualPeriodStart | date }}
-              </div>
-            </div>
-            <div class="field col-12 md:col-4">
-              <label class="mb-1" for="menstrualPeriodEnd"
-                >Menstrual Period End</label
-              >
-              <div class="text-lg">
-                {{ personalInformation.menstrualPeriodEnd | date }}
-              </div>
-            </div>
-          </div>
-
-          <div class="p-fluid formgrid grid">
-            <div class="field col-12">
-              <label class="mb-1" for="intendedOccupation"
-                >Intended Occupation / Activity / Study(Course)</label
-              >
-              <div class="text-lg">
-                {{ personalInformation.intendedOccupation }}
-              </div>
-            </div>
-          </div>
-
-          <div class="p-fluid formgrid grid">
-            <div class="field col-12 md:col-4">
-              <label class="small mb-1" for="passportNumber"
-                >Passport Number</label
-              >
-              <div class="text-lg">
-                {{ personalInformation.passportNumber }}
-              </div>
-            </div>
-            <div class="field col-12 md:col-4">
-              <label class="mb-1" for="dateIssued">Date Issued</label>
-              <div class="text-lg">
-                {{ personalInformation.dateIssued | date }}
-              </div>
-            </div>
-            <div class="field col-12 md:col-4">
-              <label class="mr-2" for="isExpired">Expired in 6 Months? </label>
-              <div class="text-lg">
-                {{ personalInformation.isExpired ? 'Yes' : 'No' }}
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="p-fluid formgrid grid"
-            *ngIf="personalInformation.hasOtherId">
-            <div class="field col-12 md:col-4">
-              <label class="small mb-1" for="otherId">Other ID</label>
-              <div class="text-lg">{{ personalInformation.otherId }}</div>
-            </div>
-          </div>
-
-          <div class="p-fluid formgrid grid">
-            <div class="field col-12 md:col-4">
-              <label class="small mb-1" for="email">Email Address</label>
-              <div class="text-lg">{{ personalInformation.email }}</div>
-            </div>
-            <div class="field col-12 md:col-4">
-              <label class="mb-1" for="mobileNumber">Mobile Number</label>
-              <div class="text-lg">{{ personalInformation.mobileNumber }}</div>
-            </div>
-            <div class="field col-12 md:col-4">
-              <label class="mb-1" for="landLineNumber">Landline Number</label>
-              <div class="text-lg">
-                {{ personalInformation.landLineNumber }}
-              </div>
-            </div>
-          </div>
-
-          <div class="p-fluid formgrid grid">
-            <div class="field col-12">
-              <label class="mb-1" for="address">Address</label>
-              <div class="text-lg">{{ personalInformation.address }}</div>
             </div>
           </div>
         </p-panel>
@@ -194,7 +47,7 @@
           class="mr-2">
         </p-button>
         <p-button
-          label="Save"
+          label="Next"
           (onClick)="saveRecord()"
           icon="pi pi-save"
           iconPos="right"

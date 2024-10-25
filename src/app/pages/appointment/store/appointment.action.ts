@@ -1,16 +1,11 @@
 import {
-  IPersonalInformation,
+  IAppointmentTime,
   ISchedule,
 } from '@app/shared/interface';
 import { createAction, props } from '@ngrx/store';
 
 export const ResetAppointmentForm = createAction(
   '[Appointment Component] Reset ResetAppointmentForm'
-);
-
-export const UpdatePersonalInformation = createAction(
-  '[Personal Component] Update Personal Information',
-  props<{ payload: IPersonalInformation }>()
 );
 
 export const UpdateAcceptedTerms = createAction(
@@ -22,3 +17,8 @@ export const UpdateSchedule = createAction(
   '[Schedule Component] Update Schedule',
   props<{ payload: ISchedule }>()
 );
+
+export const UpdateTimeSlots = createAction(
+  '[Schedule Component] Update Time Slots',
+  props<{ payload: IAppointmentTime[]}>()
+)

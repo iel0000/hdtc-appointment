@@ -4,7 +4,6 @@ import { AppointmentComponent } from './pages/appointment/appointment.component'
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { HomeComponent } from './pages/home/home.component';
 import {
-  PersonalComponent,
   ReviewComponent,
   ScheduleComponent,
 } from './pages/appointment';
@@ -28,9 +27,12 @@ const routes: Routes = [
   {
     path: 'appointment',
     component: AppointmentComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       { path: '', redirectTo: 'schedule', pathMatch: 'full' },
       { path: 'schedule', component: ScheduleComponent },
+      { path: 'review', component: ReviewComponent },
     ],
   },
   {

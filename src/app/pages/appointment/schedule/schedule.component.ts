@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   IAppointment,
@@ -13,8 +13,9 @@ import { Store } from '@ngrx/store';
 import { SelectItem } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
 import { HttpService } from 'src/services/http.service';
-import { ResetAppointmentForm, selectRecord, UpdateSchedule } from '../store';
+import { ResetAppointmentForm, selectRecord, UpdateSchedule, UpdateTimeSlots } from '../store';
 import { IProduct } from '@app/shared/interface/product.interface';
+import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-schedule',
@@ -22,7 +23,7 @@ import { IProduct } from '@app/shared/interface/product.interface';
   styleUrls: ['./schedule.component.scss'],
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
-  selectedTime!: string;
+  selectedTime!: number[];
   scheduleForm: FormGroup;
   appointmentDate!: string;
   appointmentTime!: IAppointmentTime[];
@@ -32,6 +33,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   selectedProduct!: number;
   invalidDates: Array<Date> = [];
   showCalendar = false;
+  selectedDuration!: number
 
   constructor(
     private router: Router,
@@ -50,8 +52,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   get productDetails(): any {
-    console.log(this.selectedProduct)
-    if (this.product) {
+    if (this.product && this.product !== undefined) {
       return this.product.find(x => x.id === this.selectedProduct);
     }
     return null;
@@ -89,20 +90,24 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         this.selectedTime = s.schedule.appointmentTime;
         this.selectedProduct = s.schedule.product;
 
+
         let payload = {
           appointmentDate: s.schedule.appointmentDate,
-          branchId: this.selectedProduct,
+          serviceId: this.selectedProduct
         };
 
-        // if (this.appointmentDate) {
-        //   this.httpSvc
-        //     .post('Appointment/GetAppointmentTime', payload)
-        //     .subscribe(response => {
-        //       this.appointmentTime = response;
-        //     });
-        // }
+        if (this.appointmentDate) {
+          this.httpSvc
+            .post('Appointment/GetAppointmentTime', payload)
+            .subscribe(response => {
+              this.appointmentTime = response;
+              this.showCalendar = true;
+            });
+        }
+
       });
 
+      console.log("getservices")
     this.httpSvc.get('Admin/GetServices').subscribe(response => {
       this.product = response;
     });
@@ -114,46 +119,52 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   getDisabledDays(event: any) {
-    this.showCalendar = true;
-    this.selectedTime = '';
+    this.showCalendar = false;
+    this.selectedTime = [];
     this.appointmentDate = '';
-    // this.scheduleForm.patchValue({
-    //   appointmentDate: '',
-    //   appointmentTime: '',
-    // });
+    this.scheduleForm.patchValue({
+      appointmentDate: '',
+    });
 
-    // if (this.selectedBranch) {
-    //   this.httpSvc
-    //     .get(`Appointment/GetDisabledDays/${this.selectedBranch}`)
-    //     .subscribe(response => {
-    //       this.invalidDates = [];
-    //       response.forEach((element: string) => {
-    //         this.invalidDates.push(new Date(element));
-    //       });
-    //       this.showCalendar = true;
-    //     });
-    // }
+    if (this.selectedProduct) {
+      this.httpSvc
+        .get(`Appointment/GetDisabledDays`)
+        .subscribe(response => {
+          this.invalidDates = [];
+          response.forEach((element: string) => {
+            this.invalidDates.push(new Date(element));
+          });
+          this.showCalendar = true;
+        });
+    }
   }
 
   resetSelectedTime() {
     this.appointmentTime = [];
-    this.scheduleForm.patchValue({ appointmentTime: '' });
-    this.selectedTime = '';
+    this.scheduleForm.patchValue({ appointmentTime: [] });
+    this.selectedTime = [];
+    this.selectedDuration = this.product.find(x => x.id === this.selectedProduct)?.duration ?? 0
 
-    // let payload = {
-    //   appointmentDate: formatDate(
-    //     this.appointmentDate,
-    //     'yyyy-MM-ddT00:00:00.000',
-    //     'en-US'
-    //   ),
-    //   branchId: this.selectedBranch,
-    // };
+    let payload = {
+      appointmentDate: formatDate(
+        this.appointmentDate,
+        'yyyy-MM-ddT00:00:00.000',
+        'en-US'
+      ),
+      serviceId: this.selectedProduct
+    };
 
-    // this.httpSvc
-    //   .post('Appointment/GetAppointmentTime', payload)
-    //   .subscribe(response => {
-    //     this.appointmentTime = response;
-    //   });
+    let currentProduct = this.product.find(x => x.id === this.selectedProduct)
+    this.httpSvc
+      .post('Appointment/GetAppointmentTime', payload)
+      .subscribe(response => {
+        this.appointmentTime = response;        
+
+        this.scheduleForm.get('appointmentTime')?.setValidators([Validators.required, 
+          Validators.minLength(currentProduct?.duration ?? 1)]);
+        this.scheduleForm.get('appointmentTime')?.updateValueAndValidity();
+
+      });
   }
 
   getSlotStatus(availableSlot: number): string {
@@ -164,11 +175,25 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       UpdateSchedule({ payload: <ISchedule>this.scheduleForm.getRawValue() })
     );
-    this.router.navigate(['appointment/personal-info']);
+
+    this.store.dispatch(
+      UpdateTimeSlots({ payload: this.appointmentTime })
+    );
+    this.router.navigate(['appointment/review']);
     return;
   }
 
-  prevPage() {
-    this.router.navigate(['appointment/notice']);
+  onTimeSelect(event:any) {
+    this.selectedTime.sort((a,b)=> a - b);
+    this.scheduleForm.patchValue({
+      appointmentTime: this.selectedTime
+    })
+  }
+
+  isSelected(id: number): boolean {
+    if(this.selectedTime) {
+      return this.selectedTime.includes(id)
+    }
+    return false;
   }
 }

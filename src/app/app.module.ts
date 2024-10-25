@@ -8,7 +8,6 @@ import { NavbarComponent } from '@shared/navbar/navbar.component';
 import { HomeComponent } from '@app/pages/home/home.component';
 import { AppointmentComponent } from '@app/pages/appointment/appointment.component';
 import {
-  PersonalComponent,
   ReviewComponent,
   ScheduleComponent,
 } from '@app/pages/appointment';
@@ -28,6 +27,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ServicesOfferedComponent } from './pages/admin/services-offered/services-offered.component';
 import { ServicesFormComponent } from './pages/admin/services-offered/services-form/services-form.component';
+import { CommaToLineBreak } from './core/pipes/commaToBreakline.pipe';
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');
@@ -40,7 +40,6 @@ export function tokenGetter() {
     HomeComponent,
     AppointmentComponent,
     ScheduleComponent,
-    PersonalComponent,
     ReviewComponent,
     LayoutComponent,
     ErrorComponent,
@@ -50,7 +49,8 @@ export function tokenGetter() {
     LoginComponent,
     DashboardComponent,
     ServicesOfferedComponent,
-    ServicesFormComponent
+    ServicesFormComponent,
+    CommaToLineBreak
   ],
   imports: [
     BrowserModule,

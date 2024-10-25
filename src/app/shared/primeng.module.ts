@@ -38,6 +38,7 @@ import { MegaMenuModule } from 'primeng/megamenu';
 import { MenuModule } from 'primeng/menu';
 import { ChipModule } from 'primeng/chip';
 import { SkeletonModule } from 'primeng/skeleton';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
 
 @NgModule({
   declarations: [],
@@ -75,6 +76,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     MenuModule,
     ChipModule,
     SkeletonModule,
+    ScrollPanelModule
   ],
   providers: [MessageService, ConfirmationService],
   exports: [
@@ -116,6 +118,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     MenuModule,
     ChipModule,
     SkeletonModule,
+    ScrollPanelModule
   ],
 })
 export class PrimeNgModule {}

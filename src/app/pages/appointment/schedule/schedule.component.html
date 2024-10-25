@@ -21,10 +21,20 @@
                 </ng-template>
                 <ng-template let-item pTemplate="item">
                   <div>
-                    <b>{{ item.name }}</b> ({{ item.description }})
+                    <b>{{ item.name }}</b>
                   </div>
                 </ng-template>
               </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="selectedProduct">         
+          <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-4">
+              <p-card>
+                <h5>Service Offered: </h5>{{ productDetails?.description }} <br/>
+                <h5 class="mt-4">Duration: </h5>{{ productDetails?.duration }} hrs
+            </p-card>
             </div>
           </div>
         </div>
@@ -42,7 +52,7 @@
                 disabledWeekends="true"
                 [minDate]="today"
                 [disabledDates]="invalidDates"
-                [disabledDays]="[0, 6]">
+                [disabledDays]="[4]">
                 <ng-template pTemplate="date" let-date>
                   <span
                     [ngClass]="{
@@ -58,27 +68,20 @@
               </p-calendar>
             </div>
             <div class="field col-6 md:col-6">
-              <h5>Time<span style="color: red">*</span></h5>
+              <h5>Time<span style="color: red">*</span><span class="text-muted ml-2 fs-6">(Select {{ productDetails?.duration }} timeslot)</span></h5> 
               <p-divider></p-divider>
               <!-- Time  -->
               <div *ngIf="scheduleForm.get('appointmentDate')?.value">
-                <div class="row" *ngFor="let time of appointmentTime">
+                <div class="row" *ngFor="let time of appointmentTime; let i = index">
                   <div class="col">
                     <div class="field-radiobutton">
-                      <p-radioButton
-                        name="appointmentTime"
-                        [value]="time.id"
-                        [label]="time.name"
-                        formControlName="appointmentTime"
-                        [disabled]="time.availableSlot === 0">
-                      </p-radioButton>
+                      <p-checkbox name="appointmentTime" [value]="time.id" 
+                      [label]="time.name"
+                      [disabled]="time.availableSlot === 0 || (selectedDuration === selectedTime.length && !isSelected(time.id))"
+                      [(ngModel)]="selectedTime"
+                      (onChange)="onTimeSelect($event)"
+                      [ngModelOptions]="{standalone: true}"></p-checkbox>
                     </div>
-                  </div>
-                  <div class="col text-success" *ngIf="time.availableSlot > 0">
-                    Available Slots: {{ time.availableSlot }}
-                  </div>
-                  <div class="col text-danger" *ngIf="time.availableSlot === 0">
-                    Fully Booked
                   </div>
                 </div>
               </div>

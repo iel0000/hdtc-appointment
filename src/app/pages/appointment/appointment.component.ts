@@ -20,7 +20,7 @@ export class AppointmentComponent implements OnInit, OnDestroy {
       { label: 'Schedule', routerLink: 'schedule' },
       // { label: 'Personal Info', routerLink: 'personal-info' },
       // { label: 'Visa Info', routerLink: 'visa-info' },
-      // { label: 'Review', routerLink: 'review' },
+       { label: 'Review', routerLink: 'review' },
     ];
   }
 

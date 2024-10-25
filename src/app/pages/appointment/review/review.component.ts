@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 import { Subject, take, takeUntil } from 'rxjs';
 import { HttpService } from 'src/services/http.service';
 import { ResetAppointmentForm, selectRecord } from '../store';
+import { IProduct } from '@app/shared/interface/product.interface';
 
 @Component({
   selector: 'app-review',
@@ -22,19 +23,11 @@ import { ResetAppointmentForm, selectRecord } from '../store';
 export class ReviewComponent implements OnInit, OnDestroy {
   reviewForm!: IAppointment;
   private ngUnsubscribe = new Subject<void>();
+  products: IProduct | undefined
+  timeSlots: string[] = []
 
-  labItems: Array<IChoices> = [];
-
-  embassy: string | undefined;
-  visaType: string | undefined;
-  visaCategory: string | undefined;
-  selectedLabRequisition: string[] = [];
   id: any;
 
-  categories!: string;
-  referrals!: string;
-  intendedWork!: string;
-  lengthOfStay!: string;
 
   constructor(
     private store: Store,
@@ -48,40 +41,10 @@ export class ReviewComponent implements OnInit, OnDestroy {
       schedule: {
         product: 0,
         appointmentDate: '',
-        appointmentTime: '',
+        appointmentTime: [],
       },
-      personalInformation: {
-        id: 0,
-        personalCategory: '',
-        referral: '',
-        firstName: '',
-        lastName: '',
-        middleName: '',
-        birthDate: '',
-        age: '',
-        gender: '',
-        mobileNumber: '',
-        email: '',
-        address: '',
-        civilStatus: '',
-        hasMenstrualPeriod: false,
-        menstrualPeriodStart: '',
-        menstrualPeriodEnd: '',
-        intendedOccupation: '',
-        hasPassport: false,
-        passportNumber: '',
-        dateIssued: '',
-        isExpired: false,
-        hasOtherId: false,
-        otherId: '',
-        landLineNumber: '',
-        isAcceptedTerms: false,
-      },
+      timeSlots: []
     };
-  }
-
-  get personalInformation(): IPersonalInformation {
-    return this.reviewForm.personalInformation;
   }
 
   get scheduleInformation(): any {
@@ -95,30 +58,22 @@ export class ReviewComponent implements OnInit, OnDestroy {
       .select(selectRecord)
       .pipe(take(1))
       .subscribe(s => {
-        if (!s.personalInformation.firstName) {
-          if (!s.isAcceptedTerms) {
-            this.router.navigate(['appointment/notice']);
-            return;
-          }
-        }
-        this.reviewForm.isAcceptedTerms = s.isAcceptedTerms;
         this.reviewForm.schedule = s.schedule;
-        this.reviewForm.personalInformation = s.personalInformation;
-      });
+        this.httpService.get(`Admin/GetServicesById/${s.schedule.product}`)
+            .subscribe((response: IProduct) => {
+              this.products = response
+            })
 
-    this.httpService
-      .get('Appointment/GetPersonalCategories')
-      .subscribe(response => {
-        this.categories = response.find(
-          (x: any) => x.code === this.personalInformation.personalCategory
-        )?.name;
+        this.reviewForm.timeSlots = s.timeSlots
+        if(s.timeSlots.length > 0){
+          this.timeSlots = []
+          s.timeSlots.forEach(element => {
+            if(s.schedule.appointmentTime.includes(element.id)){
+              this.timeSlots.push(element.name)
+            }
+          });
+        }
       });
-
-    this.httpService.get('Appointment/GetReferrals').subscribe(response => {
-      this.referrals = response.find(
-        (x: any) => x.code === this.personalInformation.referral
-      )?.name;
-    });
 
   }
 
@@ -128,7 +83,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
   }
 
   back() {
-    this.router.navigate(['appointment/visa-info']);
+    this.router.navigate(['appointment/schedule']);
   }
 
   saveRecord() {
@@ -156,5 +111,13 @@ export class ReviewComponent implements OnInit, OnDestroy {
           });
         }
       );
+  }
+
+  getScheduleTime(): string {
+    if(this.timeSlots.length > 0){
+      return this.timeSlots.join(', ')
+    }
+
+    return ''
   }
 }

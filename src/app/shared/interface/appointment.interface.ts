@@ -1,13 +1,15 @@
+import { IAppointmentTime } from "./appointmentTime.interface";
+
 export interface IAppointment {
   isAcceptedTerms: boolean;
   schedule: ISchedule;
-  personalInformation: IPersonalInformation;
+  timeSlots: IAppointmentTime[]
 }
 
 export interface ISchedule {
   product: number;
   appointmentDate: string;
-  appointmentTime: string;
+  appointmentTime: number[];
 }
 
 export interface IPersonalInformation {

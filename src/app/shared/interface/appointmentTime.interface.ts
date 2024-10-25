@@ -1,5 +1,5 @@
 export interface IAppointmentTime {
-  id: string;
+  id: number;
   name: string;
   availableSlot: number;
 }
