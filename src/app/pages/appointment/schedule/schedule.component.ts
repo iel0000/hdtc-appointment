@@ -12,9 +12,9 @@ import { IBranch } from '@app/shared/interface/branch.interface';
 import { Store } from '@ngrx/store';
 import { SelectItem } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
-import { Site } from 'src/app/shared/constant/site';
 import { HttpService } from 'src/services/http.service';
 import { ResetAppointmentForm, selectRecord, UpdateSchedule } from '../store';
+import { IProduct } from '@app/shared/interface/product.interface';
 
 @Component({
   selector: 'app-schedule',
@@ -22,16 +22,15 @@ import { ResetAppointmentForm, selectRecord, UpdateSchedule } from '../store';
   styleUrls: ['./schedule.component.scss'],
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
-  site = Site;
   selectedTime!: string;
   scheduleForm: FormGroup;
   appointmentDate!: string;
   appointmentTime!: IAppointmentTime[];
   today!: Date;
-  branch!: IBranch[];
+  product!: IProduct[];
   private ngUnsubscribe = new Subject<void>();
-  selectedBranch!: string;
-  invalidDates!: Array<Date>;
+  selectedProduct!: number;
+  invalidDates: Array<Date> = [];
   showCalendar = false;
 
   constructor(
@@ -41,7 +40,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     private httpSvc: HttpService
   ) {
     this.scheduleForm = this.fb.group({
-      site: ['', Validators.required],
+      product: [0, Validators.min(1)],
       appointmentDate: ['', Validators.required],
       appointmentTime: ['', Validators.required],
     });
@@ -50,9 +49,10 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.today.setDate(this.today.getDate() + 1);
   }
 
-  get branchDetails(): any {
-    if (this.branch) {
-      return this.branch.find(x => x.id === this.selectedBranch);
+  get productDetails(): any {
+    console.log(this.selectedProduct)
+    if (this.product) {
+      return this.product.find(x => x.id === this.selectedProduct);
     }
     return null;
   }
@@ -76,13 +76,9 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       .select(selectRecord)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(s => {
-        if (!s.isAcceptedTerms) {
-          this.router.navigate(['appointment/notice']);
-          return;
-        }
 
         this.scheduleForm.patchValue({
-          site: s.schedule.site,
+          product: s.schedule.product,
           appointmentDate: s.schedule.appointmentDate,
           appointmentTime: s.schedule.appointmentTime,
         });
@@ -91,24 +87,24 @@ export class ScheduleComponent implements OnInit, OnDestroy {
           ? formatDate(s.schedule.appointmentDate, 'MM/dd/yyyy', 'en-US')
           : '';
         this.selectedTime = s.schedule.appointmentTime;
-        this.selectedBranch = s.schedule.site;
+        this.selectedProduct = s.schedule.product;
 
         let payload = {
           appointmentDate: s.schedule.appointmentDate,
-          branchId: this.selectedBranch,
+          branchId: this.selectedProduct,
         };
 
-        if (this.appointmentDate) {
-          this.httpSvc
-            .post('Appointment/GetAppointmentTime', payload)
-            .subscribe(response => {
-              this.appointmentTime = response;
-            });
-        }
+        // if (this.appointmentDate) {
+        //   this.httpSvc
+        //     .post('Appointment/GetAppointmentTime', payload)
+        //     .subscribe(response => {
+        //       this.appointmentTime = response;
+        //     });
+        // }
       });
 
-    this.httpSvc.get('Appointment/GetAllBranches').subscribe(response => {
-      this.branch = response;
+    this.httpSvc.get('Admin/GetServices').subscribe(response => {
+      this.product = response;
     });
   }
 
@@ -118,25 +114,25 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   getDisabledDays(event: any) {
-    this.showCalendar = false;
+    this.showCalendar = true;
     this.selectedTime = '';
     this.appointmentDate = '';
-    this.scheduleForm.patchValue({
-      appointmentDate: '',
-      appointmentTime: '',
-    });
+    // this.scheduleForm.patchValue({
+    //   appointmentDate: '',
+    //   appointmentTime: '',
+    // });
 
-    if (this.selectedBranch) {
-      this.httpSvc
-        .get(`Appointment/GetDisabledDays/${this.selectedBranch}`)
-        .subscribe(response => {
-          this.invalidDates = [];
-          response.forEach((element: string) => {
-            this.invalidDates.push(new Date(element));
-          });
-          this.showCalendar = true;
-        });
-    }
+    // if (this.selectedBranch) {
+    //   this.httpSvc
+    //     .get(`Appointment/GetDisabledDays/${this.selectedBranch}`)
+    //     .subscribe(response => {
+    //       this.invalidDates = [];
+    //       response.forEach((element: string) => {
+    //         this.invalidDates.push(new Date(element));
+    //       });
+    //       this.showCalendar = true;
+    //     });
+    // }
   }
 
   resetSelectedTime() {
@@ -144,20 +140,20 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.scheduleForm.patchValue({ appointmentTime: '' });
     this.selectedTime = '';
 
-    let payload = {
-      appointmentDate: formatDate(
-        this.appointmentDate,
-        'yyyy-MM-ddT00:00:00.000',
-        'en-US'
-      ),
-      branchId: this.selectedBranch,
-    };
+    // let payload = {
+    //   appointmentDate: formatDate(
+    //     this.appointmentDate,
+    //     'yyyy-MM-ddT00:00:00.000',
+    //     'en-US'
+    //   ),
+    //   branchId: this.selectedBranch,
+    // };
 
-    this.httpSvc
-      .post('Appointment/GetAppointmentTime', payload)
-      .subscribe(response => {
-        this.appointmentTime = response;
-      });
+    // this.httpSvc
+    //   .post('Appointment/GetAppointmentTime', payload)
+    //   .subscribe(response => {
+    //     this.appointmentTime = response;
+    //   });
   }
 
   getSlotStatus(availableSlot: number): string {

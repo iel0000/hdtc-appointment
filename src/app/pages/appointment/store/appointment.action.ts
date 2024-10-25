@@ -1,7 +1,6 @@
 import {
   IPersonalInformation,
   ISchedule,
-  IVisaInformation,
 } from '@app/shared/interface';
 import { createAction, props } from '@ngrx/store';
 
@@ -22,9 +21,4 @@ export const UpdateAcceptedTerms = createAction(
 export const UpdateSchedule = createAction(
   '[Schedule Component] Update Schedule',
   props<{ payload: ISchedule }>()
-);
-
-export const UpdateVisaInformation = createAction(
-  '[Visa Info Component] Update Visa Information',
-  props<{ payload: IVisaInformation }>()
 );

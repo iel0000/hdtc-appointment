@@ -22,16 +22,16 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Name</th>
-                <th>Image</th>
-                <th>Price</th>
-                <th>Duration</th>
+                <!-- <th>Image</th> -->
+                <th>Price (Php)</th>
+                <th>Duration (hrs)</th>
                 <th>Action</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
             <tr>
                 <td>{{product.name}}</td>
-                <td><img [src]="'assets/img/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td>
+                <!-- <td><img [src]="'assets/img/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td> -->
                 <td>{{product.price | currency:'PHP'}}</td>
                 <td>{{product.duration}}</td>
                 <td><button
@@ -44,7 +44,8 @@
                   pButton
                   pRipple
                   icon="pi pi-times"
-                  class="p-button-rounded p-button-text p-button-warning"></button>
+                  class="p-button-rounded p-button-text p-button-warning"
+                  (click)="deleteItem(product)"></button>
                 <button
                   pButton
                   pRipple

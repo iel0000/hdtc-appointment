@@ -16,11 +16,11 @@ export class AppointmentComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder, private store: Store) {
     this.items = [
-      { label: 'Notice', routerLink: 'notice' },
+      // { label: 'Notice', routerLink: 'notice' },
       { label: 'Schedule', routerLink: 'schedule' },
-      { label: 'Personal Info', routerLink: 'personal-info' },
-      { label: 'Visa Info', routerLink: 'visa-info' },
-      { label: 'Review', routerLink: 'review' },
+      // { label: 'Personal Info', routerLink: 'personal-info' },
+      // { label: 'Visa Info', routerLink: 'visa-info' },
+      // { label: 'Review', routerLink: 'review' },
     ];
   }
 

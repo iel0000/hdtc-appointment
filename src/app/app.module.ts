@@ -8,11 +8,9 @@ import { NavbarComponent } from '@shared/navbar/navbar.component';
 import { HomeComponent } from '@app/pages/home/home.component';
 import { AppointmentComponent } from '@app/pages/appointment/appointment.component';
 import {
-  NoticeComponent,
   PersonalComponent,
   ReviewComponent,
   ScheduleComponent,
-  VisaInfoComponent,
 } from '@app/pages/appointment';
 import { StoreModule } from '@ngrx/store';
 import { appointmentPageReducer } from '@app/pages/appointment/store/appointment.reducer';
@@ -41,10 +39,8 @@ export function tokenGetter() {
     FooterComponent,
     HomeComponent,
     AppointmentComponent,
-    NoticeComponent,
     ScheduleComponent,
     PersonalComponent,
-    VisaInfoComponent,
     ReviewComponent,
     LayoutComponent,
     ErrorComponent,

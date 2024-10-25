@@ -4,11 +4,9 @@ import { AppointmentComponent } from './pages/appointment/appointment.component'
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { HomeComponent } from './pages/home/home.component';
 import {
-  NoticeComponent,
   PersonalComponent,
   ReviewComponent,
   ScheduleComponent,
-  VisaInfoComponent,
 } from './pages/appointment';
 import { ErrorComponent } from './pages/error/error.component';
 import { LayoutComponent } from './pages/layout/layout.component';
@@ -31,12 +29,8 @@ const routes: Routes = [
     path: 'appointment',
     component: AppointmentComponent,
     children: [
-      { path: '', redirectTo: 'notice', pathMatch: 'full' },
-      { path: 'notice', component: NoticeComponent },
+      { path: '', redirectTo: 'schedule', pathMatch: 'full' },
       { path: 'schedule', component: ScheduleComponent },
-      { path: 'personal-info', component: PersonalComponent },
-      { path: 'visa-info', component: VisaInfoComponent },
-      { path: 'review', component: ReviewComponent },
     ],
   },
   {

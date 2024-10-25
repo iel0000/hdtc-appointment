@@ -2,11 +2,10 @@ export interface IAppointment {
   isAcceptedTerms: boolean;
   schedule: ISchedule;
   personalInformation: IPersonalInformation;
-  visaInformation: IVisaInformation;
 }
 
 export interface ISchedule {
-  site: string;
+  product: number;
   appointmentDate: string;
   appointmentTime: string;
 }
@@ -39,16 +38,3 @@ export interface IPersonalInformation {
   isAcceptedTerms: boolean;
 }
 
-export interface IVisaInformation {
-  id: number;
-  embassy: string;
-  visaType: string;
-  visaCategory: string;
-  isFirstVisa: string;
-  hasVisaRejected: string;
-  lengthOfStay: string;
-  hasLetterReceived: string;
-  isTemporaryVisa: string;
-  isHealthAssessed: string;
-  intendedWork: string;
-}

@@ -6,8 +6,7 @@ import {
   IChoices,
   IDropDown,
   IPersonalInformation,
-  ISchedule,
-  IVisaInformation,
+  ISchedule
 } from '@app/shared/interface';
 import { Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';
@@ -47,7 +46,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
     this.reviewForm = {
       isAcceptedTerms: false,
       schedule: {
-        site: '',
+        product: 0,
         appointmentDate: '',
         appointmentTime: '',
       },
@@ -78,28 +77,11 @@ export class ReviewComponent implements OnInit, OnDestroy {
         landLineNumber: '',
         isAcceptedTerms: false,
       },
-      visaInformation: {
-        id: 0,
-        embassy: '',
-        visaType: '',
-        visaCategory: '',
-        isFirstVisa: '',
-        hasVisaRejected: '',
-        lengthOfStay: '0',
-        hasLetterReceived: '',
-        isTemporaryVisa: '',
-        isHealthAssessed: '',
-        intendedWork: '0',
-      },
     };
   }
 
   get personalInformation(): IPersonalInformation {
     return this.reviewForm.personalInformation;
-  }
-
-  get visaInformation(): IVisaInformation {
-    return this.reviewForm.visaInformation;
   }
 
   get scheduleInformation(): any {
@@ -122,11 +104,6 @@ export class ReviewComponent implements OnInit, OnDestroy {
         this.reviewForm.isAcceptedTerms = s.isAcceptedTerms;
         this.reviewForm.schedule = s.schedule;
         this.reviewForm.personalInformation = s.personalInformation;
-        this.reviewForm.visaInformation = s.visaInformation;
-
-        this.getVisaCategories(+s.visaInformation.embassy);
-        this.getVisaTypes();
-        this.getEmbassies();
       });
 
     this.httpService
@@ -143,56 +120,11 @@ export class ReviewComponent implements OnInit, OnDestroy {
       )?.name;
     });
 
-    this.httpService
-      .get('Appointment/GetIntendedLengthOfStay')
-      .subscribe(response => {
-        this.lengthOfStay = response.find(
-          (x: any) => x.code === this.visaInformation.lengthOfStay
-        )?.name;
-      });
-
-    this.httpService.get('Appointment/GetIntendedWork').subscribe(response => {
-      this.intendedWork = response.find(
-        (x: any) => x.code === this.visaInformation.intendedWork
-      )?.name;
-    });
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  getEmbassies() {
-    if (this.reviewForm.visaInformation.embassy) {
-      this.httpService.get('Appointment/GetEmbassies').subscribe(response => {
-        this.embassy = response.find(
-          (x: IDropDown) => x.code === this.visaInformation.embassy
-        ).name;
-      });
-    }
-  }
-
-  getVisaTypes() {
-    if (this.reviewForm.visaInformation.visaType) {
-      this.httpService.get('Appointment/GetVisaTypes').subscribe(response => {
-        this.visaType = response.find(
-          (x: IDropDown) => x.code === this.visaInformation.visaType
-        ).name;
-      });
-    }
-  }
-
-  getVisaCategories(embassyId: number) {
-    if (this.reviewForm.visaInformation.visaCategory) {
-      this.httpService
-        .get(`Appointment/GetVisaCategories/${embassyId}`)
-        .subscribe(response => {
-          this.visaCategory = response.find(
-            (x: IDropDown) => x.code === this.visaInformation.visaCategory
-          ).name;
-        });
-    }
   }
 
   back() {

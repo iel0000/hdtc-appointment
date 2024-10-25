@@ -8,7 +8,7 @@ export const initialState: IAppointment = {
   schedule: {
     appointmentDate: '',
     appointmentTime: '',
-    site: '',
+    product: 0,
   },
   personalInformation: {
     id: 0,
@@ -37,19 +37,6 @@ export const initialState: IAppointment = {
     landLineNumber: '',
     isAcceptedTerms: false,
   },
-  visaInformation: {
-    id: 0,
-    embassy: '',
-    visaType: '',
-    visaCategory: '',
-    isFirstVisa: '',
-    hasVisaRejected: '',
-    lengthOfStay: '0',
-    hasLetterReceived: '',
-    isTemporaryVisa: '',
-    isHealthAssessed: '',
-    intendedWork: '0',
-  },
 };
 
 export const appointmentPageReducer = createReducer(
@@ -57,13 +44,11 @@ export const appointmentPageReducer = createReducer(
   on(AppointmentPageActions.ResetAppointmentForm, (state): IAppointment => {
     let schedule = initialState.schedule;
     let personalInformation = initialState.personalInformation;
-    let visaInformation = initialState.visaInformation;
     return {
       ...state,
       isAcceptedTerms: false,
       schedule,
-      personalInformation,
-      visaInformation,
+      personalInformation
     };
   }),
   on(
@@ -125,12 +110,6 @@ export const appointmentPageReducer = createReducer(
         ...state,
         personalInformation: values,
       };
-    }
-  ),
-  on(
-    AppointmentPageActions.UpdateVisaInformation,
-    (state, { payload }): IAppointment => {
-      return { ...state, visaInformation: payload };
     }
   )
 );

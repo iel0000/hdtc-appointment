@@ -6,7 +6,7 @@ import { IProduct } from '@app/shared/interface/product.interface';
 import { HttpService } from '@app/shared/services';
 import { environment } from '@environments/environment';
 import { faBars, faBell, faChartLine } from '@fortawesome/free-solid-svg-icons';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-services',
@@ -22,7 +22,8 @@ export class ServicesOfferedComponent implements OnInit {
     private httpSvc: HttpService,
     private messageService: MessageService,
     private authSvc: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private confirmationService: ConfirmationService
   ) {
     this.products =[]
   }
@@ -47,6 +48,33 @@ export class ServicesOfferedComponent implements OnInit {
 
   editItem(product: IProduct) {
     this.router.navigate([`admin/services/edit/${product.id}`]);
+  }
+
+  deleteItem(product: IProduct) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete selected record?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.httpSvc.delete(`Admin/DeleteProduct`, product.id).subscribe(
+          response => {
+            this.messageService.add({
+              severity: response.status.toLowerCase(),
+              summary: 'Delete Record',
+              detail: response.message,
+            });
+            this.loadProducts();
+          },
+          error => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Delete Record',
+              detail: error.message,
+            });
+          }
+        );
+      },
+    });
   }
 
 }
