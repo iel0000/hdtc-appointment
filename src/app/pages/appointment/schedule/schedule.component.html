@@ -33,7 +33,8 @@
             <div class="field col-12 md:col-4">
               <p-card>
                 <h5>Service Offered: </h5>{{ productDetails?.description }} <br/>
-                <h5 class="mt-4">Duration: </h5>{{ productDetails?.duration }} hrs
+                <h5 class="mt-4">Duration: </h5>{{ productDetails?.duration }} hrs <br/>
+                <h5 class="mt-4">Price: </h5>{{ productDetails?.price | currency:'PHP':'symbol' }}
             </p-card>
             </div>
           </div>

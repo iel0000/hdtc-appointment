@@ -9,6 +9,7 @@ export const initialState: IAppointment = {
     appointmentDate: '',
     appointmentTime: [],
     product: 0,
+    price: 0
   },
   timeSlots: []
 };

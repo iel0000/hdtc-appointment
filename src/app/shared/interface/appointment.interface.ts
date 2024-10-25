@@ -10,6 +10,7 @@ export interface ISchedule {
   product: number;
   appointmentDate: string;
   appointmentTime: number[];
+  price: number
 }
 
 export interface IPersonalInformation {

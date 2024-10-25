@@ -45,6 +45,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       product: [0, Validators.min(1)],
       appointmentDate: ['', Validators.required],
       appointmentTime: ['', Validators.required],
+      price: [0, Validators.min(1)]
     });
 
     this.today = new Date();
@@ -141,10 +142,12 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
   resetSelectedTime() {
     this.appointmentTime = [];
-    this.scheduleForm.patchValue({ appointmentTime: [] });
+    this.scheduleForm.patchValue({ 
+      appointmentTime: [] ,
+      price: this.productDetails.price
+    });
     this.selectedTime = [];
     this.selectedDuration = this.product.find(x => x.id === this.selectedProduct)?.duration ?? 0
-
     let payload = {
       appointmentDate: formatDate(
         this.appointmentDate,

@@ -42,12 +42,13 @@ export class ReviewComponent implements OnInit, OnDestroy {
         product: 0,
         appointmentDate: '',
         appointmentTime: [],
+        price: 0
       },
       timeSlots: []
     };
   }
 
-  get scheduleInformation(): any {
+  get scheduleInformation(): ISchedule {
     return this.reviewForm.schedule;
   }
 
