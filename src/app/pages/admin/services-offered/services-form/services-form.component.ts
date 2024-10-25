@@ -41,7 +41,28 @@ export class ServicesFormComponent implements OnInit {
   }
 
   save() {
+    let payload = {
+      ...this.productForm.getRawValue()
+    };
 
+    this.httpSvc.post('Admin/CreateService', payload).subscribe(
+      response => {
+        this.messageService.add({
+          severity: response.status.toLowerCase(),
+          summary: 'Save Record',
+          detail: response.message,
+        });
+
+        this.router.navigate(['admin/services']);
+      },
+      error => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Save Record',
+          detail: error.error.message,
+        });
+      }
+    );
   }
 
   validateControl(controlName: string): boolean {

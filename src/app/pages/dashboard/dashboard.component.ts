@@ -51,11 +51,11 @@ export class DashboardComponent implements OnInit {
       (x: any) => x === 'Admin'
     );
 
-    if (this.isAdmin) {
-      this.loadUsers();
-    }
-    this.loadPendingAppointments();
-    this.loadRegistration();
+    // if (this.isAdmin) {
+    //   this.loadUsers();
+    // }
+    // this.loadPendingAppointments();
+    // this.loadRegistration();
   }
 
   loadUsers() {

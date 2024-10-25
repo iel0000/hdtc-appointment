@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint:fix": "ng lint --fix",
     "build": "ng build --configuration production",
-    "build:stage": "ng build --configuration staging"
+    "build:stage": "ng build --configuration staging",
+    "format:check": "prettier --config ./.prettierrc --list-different \"src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\""
   },
   "private": true,
   "dependencies": {

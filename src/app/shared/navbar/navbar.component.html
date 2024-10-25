@@ -16,10 +16,10 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navcol-1">
       <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" routerLink="/">Home</a></li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" [routerLink]="'about_us'">About</a>
-        </li> -->
+        <li class="nav-item"><a class="nav-link" routerLink="/">Home</a></li>        
+        <li class="nav-item" *ngIf="isAuthenticated && !isAdminPage">
+          <a class="nav-link" routerLink="/admin">Dashboard</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/contact_us">Contact Us</a>
         </li>
@@ -31,9 +31,6 @@
         </li>
         <li class="nav-item" *ngIf="!isAuthenticated">
           <a class="nav-link" routerLink="/login">Login</a>
-        </li>
-        <li class="nav-item" *ngIf="isAuthenticated && !isAdminPage">
-          <a class="nav-link" routerLink="/admin">Dashboard</a>
         </li>
         <button
           pButton

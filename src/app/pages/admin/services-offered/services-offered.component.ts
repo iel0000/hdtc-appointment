@@ -16,6 +16,7 @@ import { MessageService } from 'primeng/api';
 export class ServicesOfferedComponent implements OnInit {
    pageTitle: string | undefined;
    products: IProduct[];
+   isLoading: boolean = true;
 
      constructor(
     private httpSvc: HttpService,
@@ -23,24 +24,29 @@ export class ServicesOfferedComponent implements OnInit {
     private authSvc: AuthenticationService,
     private router: Router
   ) {
-    this.products =[
-      {
-			 id: 0,
-      code: "f230fh0g3",
-      name: "Tooth Extraction",
-      description: "Tooth Extraction",
-      price: 500,
-      duration: 2,
-      image: 'tooth-extraction.jpeg'
-		}]
+    this.products =[]
   }
 
   ngOnInit() {
     this.pageTitle = 'Services Offered';
+    this.loadProducts();
   }
 
   addNew() {
     this.router.navigate(['admin/services/new']);
+  }
+
+  loadProducts() {
+    this.httpSvc
+      .get(`Admin/GetServices`)
+      .subscribe(response => {
+        this.products = response;
+        this.isLoading = false;
+      });
+  }
+
+  editItem(product: IProduct) {
+    this.router.navigate([`admin/services/edit/${product.id}`]);
   }
 
 }
