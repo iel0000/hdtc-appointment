@@ -76,7 +76,8 @@ const routes: Routes = [
       {
         path: 'services',
         component: ServicesOfferedComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: { role: 'Admin' },
       },
     ]
   },
