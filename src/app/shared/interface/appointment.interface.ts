@@ -9,7 +9,7 @@ export interface IAppointment {
 export interface ISchedule {
   product: number;
   appointmentDate: string;
-  appointmentTime: number[];
+  appointmentTime: number;
   price: number
 }
 

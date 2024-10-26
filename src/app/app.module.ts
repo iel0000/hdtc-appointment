@@ -28,6 +28,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ServicesOfferedComponent } from './pages/admin/services-offered/services-offered.component';
 import { ServicesFormComponent } from './pages/admin/services-offered/services-form/services-form.component';
 import { CommaToLineBreak } from './core/pipes/commaToBreakline.pipe';
+import { RegisterComponent } from './pages/register/register.component';
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');
@@ -50,7 +51,8 @@ export function tokenGetter() {
     DashboardComponent,
     ServicesOfferedComponent,
     ServicesFormComponent,
-    CommaToLineBreak
+    CommaToLineBreak,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

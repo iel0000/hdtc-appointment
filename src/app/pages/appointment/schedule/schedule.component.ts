@@ -23,7 +23,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   styleUrls: ['./schedule.component.scss'],
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
-  selectedTime!: number[];
+  selectedTime!: number;
   scheduleForm: FormGroup;
   appointmentDate!: string;
   appointmentTime!: IAppointmentTime[];
@@ -44,7 +44,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.scheduleForm = this.fb.group({
       product: [0, Validators.min(1)],
       appointmentDate: ['', Validators.required],
-      appointmentTime: ['', Validators.required],
+      appointmentTime: [0, Validators.min(1)],
       price: [0, Validators.min(1)]
     });
 
@@ -108,7 +108,6 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
       });
 
-      console.log("getservices")
     this.httpSvc.get('Admin/GetServices').subscribe(response => {
       this.product = response;
     });
@@ -121,7 +120,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
   getDisabledDays(event: any) {
     this.showCalendar = false;
-    this.selectedTime = [];
+    this.selectedTime = 0;
     this.appointmentDate = '';
     this.scheduleForm.patchValue({
       appointmentDate: '',
@@ -143,10 +142,10 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   resetSelectedTime() {
     this.appointmentTime = [];
     this.scheduleForm.patchValue({ 
-      appointmentTime: [] ,
+      appointmentTime: 0   ,
       price: this.productDetails.price
     });
-    this.selectedTime = [];
+    this.selectedTime = 0;
     this.selectedDuration = this.product.find(x => x.id === this.selectedProduct)?.duration ?? 0
     let payload = {
       appointmentDate: formatDate(
@@ -161,17 +160,8 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.httpSvc
       .post('Appointment/GetAppointmentTime', payload)
       .subscribe(response => {
-        this.appointmentTime = response;        
-
-        this.scheduleForm.get('appointmentTime')?.setValidators([Validators.required, 
-          Validators.minLength(currentProduct?.duration ?? 1)]);
-        this.scheduleForm.get('appointmentTime')?.updateValueAndValidity();
-
+        this.appointmentTime = response;
       });
-  }
-
-  getSlotStatus(availableSlot: number): string {
-    return availableSlot > 0 ? 'Available' : 'Fully Booked';
   }
 
   nextPage() {
@@ -187,15 +177,28 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   onTimeSelect(event:any) {
-    this.selectedTime.sort((a,b)=> a - b);
-    this.scheduleForm.patchValue({
-      appointmentTime: this.selectedTime
-    })
+    // this.selectedTime.sort((a,b)=> a - b);
+    // this.scheduleForm.patchValue({
+    //   appointmentTime: this.selectedTime
+    // })
   }
 
   isSelected(id: number): boolean {
     if(this.selectedTime) {
-      return this.selectedTime.includes(id)
+      return this.selectedTime == id
+    }
+    return false;
+  }
+
+  isTimeDisabled(militaryTime: number): boolean {
+    if(this.appointmentTime.length > 0){
+      if(militaryTime == 18) { // last timeslot record 6pm - 7pm
+        return this.selectedDuration > 1; // disable if duration is more than 1 hour
+      } 
+      // else if(militaryTime == 9) { //no need to check previous time as opening time is 9am
+      //   let times = this.appointmentTime.filter(x => x.militaryTime > militaryTime && x.militaryTime <= militaryTime + this.selectedDuration);
+      //   return times.some(x => x.availableSlot === 0); //if one timeslot has no slot base on duration of service, disable the selection
+      // }  
     }
     return false;
   }

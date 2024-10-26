@@ -18,6 +18,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AdminLayoutComponent } from './shared/layout/layout.component';
 import { ServicesOfferedComponent } from './pages/admin/services-offered/services-offered.component';
 import { ServicesFormComponent } from './pages/admin/services-offered/services-form/services-form.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,11 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     canActivate: [LoginGuard],
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [LoginGuard]
   },
   {
     path: 'admin',

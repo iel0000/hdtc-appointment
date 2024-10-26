@@ -69,19 +69,26 @@
               </p-calendar>
             </div>
             <div class="field col-6 md:col-6">
-              <h5>Time<span style="color: red">*</span><span class="text-muted ml-2 fs-6">(Select {{ productDetails?.duration }} timeslot)</span></h5> 
+              <h5>Time<span style="color: red">*</span></h5> 
               <p-divider></p-divider>
               <!-- Time  -->
               <div *ngIf="scheduleForm.get('appointmentDate')?.value">
                 <div class="row" *ngFor="let time of appointmentTime; let i = index">
                   <div class="col">
                     <div class="field-radiobutton">
-                      <p-checkbox name="appointmentTime" [value]="time.id" 
+                      <p-radioButton
+                        name="appointmentTime"
+                        [value]="time.id"
+                        [label]="time.name"
+                        formControlName="appointmentTime"
+                        [disabled]="time.availableSlot === 0 || isTimeDisabled(time.militaryTime)">
+                      </p-radioButton>
+                      <!-- <p-checkbox name="appointmentTime" [value]="time.id" 
                       [label]="time.name"
                       [disabled]="time.availableSlot === 0 || (selectedDuration === selectedTime.length && !isSelected(time.id))"
                       [(ngModel)]="selectedTime"
                       (onChange)="onTimeSelect($event)"
-                      [ngModelOptions]="{standalone: true}"></p-checkbox>
+                      [ngModelOptions]="{standalone: true}"></p-checkbox> -->
                     </div>
                   </div>
                 </div>

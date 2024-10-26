@@ -23,8 +23,8 @@ import { IProduct } from '@app/shared/interface/product.interface';
 export class ReviewComponent implements OnInit, OnDestroy {
   reviewForm!: IAppointment;
   private ngUnsubscribe = new Subject<void>();
-  products: IProduct | undefined
-  timeSlots: string[] = []
+  product: IProduct | undefined
+  timeSchedule: string | undefined
 
   id: any;
 
@@ -41,7 +41,7 @@ export class ReviewComponent implements OnInit, OnDestroy {
       schedule: {
         product: 0,
         appointmentDate: '',
-        appointmentTime: [],
+        appointmentTime: 0,
         price: 0
       },
       timeSlots: []
@@ -62,18 +62,11 @@ export class ReviewComponent implements OnInit, OnDestroy {
         this.reviewForm.schedule = s.schedule;
         this.httpService.get(`Admin/GetServicesById/${s.schedule.product}`)
             .subscribe((response: IProduct) => {
-              this.products = response
+              this.product = response
             })
 
         this.reviewForm.timeSlots = s.timeSlots
-        if(s.timeSlots.length > 0){
-          this.timeSlots = []
-          s.timeSlots.forEach(element => {
-            if(s.schedule.appointmentTime.includes(element.id)){
-              this.timeSlots.push(element.name)
-            }
-          });
-        }
+        
       });
 
   }
@@ -114,11 +107,23 @@ export class ReviewComponent implements OnInit, OnDestroy {
       );
   }
 
-  getScheduleTime(): string {
-    if(this.timeSlots.length > 0){
-      return this.timeSlots.join(', ')
+  get getTimeSlot() :string {
+    if(this.reviewForm.timeSlots.length > 0 && this.product) {
+      let timeSlots = this.reviewForm.timeSlots;
+      let duration = this.product.duration ?? 0;
+      let selectedTime = this.scheduleInformation.appointmentTime;
+      let selectedSlotDetails = timeSlots.find(x => x.id === selectedTime);
+      let selectedMilitaryTime = selectedSlotDetails?.militaryTime ?? 0;
+      if(selectedMilitaryTime === 18){
+        return selectedSlotDetails?.name ?? '';
+      } else {
+        let lastSelectedSlot = timeSlots.find(x => x.militaryTime === selectedMilitaryTime + (duration - 1))
+        let lastSelectedSlotName = lastSelectedSlot?.name.split('-')[1];
+        return `${selectedSlotDetails?.name.split('-')[0].trim()} - ${lastSelectedSlotName?.trim()}`
+      }
     }
 
-    return ''
+    return '';
   }
+  
 }

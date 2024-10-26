@@ -20,7 +20,7 @@ export class LoginGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.authenticationService.isAuthenticated()) {
-      this.router.navigate(['dashboard']);
+      this.router.navigate(['admin']);
     }
     return true;
   }

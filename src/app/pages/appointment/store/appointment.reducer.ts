@@ -7,7 +7,7 @@ export const initialState: IAppointment = {
   isAcceptedTerms: false,
   schedule: {
     appointmentDate: '',
-    appointmentTime: [],
+    appointmentTime: 0,
     product: 0,
     price: 0
   },
