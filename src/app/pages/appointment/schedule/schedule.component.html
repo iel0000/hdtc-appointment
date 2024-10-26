@@ -79,7 +79,7 @@
                       <p-radioButton
                         name="appointmentTime"
                         [value]="time.id"
-                        [label]="time.name"
+                        [label]="time.name.split('-')[0]"
                         formControlName="appointmentTime"
                         [disabled]="time.availableSlot === 0 || isTimeDisabled(time.militaryTime)">
                       </p-radioButton>
