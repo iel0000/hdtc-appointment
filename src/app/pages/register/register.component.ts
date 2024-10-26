@@ -36,7 +36,6 @@ export class RegisterComponent implements OnInit {
   ) {
    
     this.registerForm = this.formBuilder.group({
-      username: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/)]],
       confirmPassword: ['', Validators.required],
       firstname: ['', [Validators.required, Validators.pattern(/[\S]/)]],
@@ -79,9 +78,11 @@ export class RegisterComponent implements OnInit {
           detail: response.message,
         });
 
+        this.loading = false;
         this.router.navigate(['']);
       },
       error => {
+        this.loading = false;
         this.messageService.add({
           severity: 'error',
           summary: 'Save Record',
